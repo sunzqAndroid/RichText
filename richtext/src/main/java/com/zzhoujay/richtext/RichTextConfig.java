@@ -179,7 +179,7 @@ public final class RichTextConfig {
         RichTextConfigBuild(String source, int richType) {
             this.source = source;
             this.richType = richType;
-            this.autoFix = true;
+            this.autoFix = false;
             this.resetSize = false;
             this.noImage = false;
             this.clickable = 0;
@@ -513,7 +513,7 @@ public final class RichTextConfig {
                 }
             }
             if (placeHolder == null) {
-                placeHolder = new ColorDrawable(Color.LTGRAY);
+                placeHolder = new ColorDrawable(Color.TRANSPARENT);
             }
             if (errorImage == null && errorImageRes != 0) {
                 try {
@@ -523,7 +523,7 @@ public final class RichTextConfig {
                 }
             }
             if (errorImage == null) {
-                errorImage = new ColorDrawable(Color.DKGRAY);
+                errorImage = new ColorDrawable(Color.TRANSPARENT);
             }
             RichText richText = new RichText(new RichTextConfig(this), textView);
             if (tag != null) {

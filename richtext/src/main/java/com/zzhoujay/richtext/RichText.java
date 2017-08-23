@@ -260,7 +260,7 @@ public class RichText implements ImageGetterWrapper, ImageLoadNotify {
                 continue;
             }
             holder = new ImageHolder(src, position, config);
-            if (!config.autoFix && !config.resetSize) {
+            if (!config.resetSize) {
                 Matcher imageWidthMatcher = IMAGE_WIDTH_PATTERN.matcher(image);
                 if (imageWidthMatcher.find()) {
                     holder.setWidth(parseStringToInteger(imageWidthMatcher.group(2).trim()));
