@@ -44,8 +44,14 @@ public class ClickableImageSpan extends ImageSpan implements LongClickableSpan {
 
     @Override
     public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
-        super.draw(canvas, text, start, end, x, top, y, bottom, paint);
+//        super.draw(canvas, text, start, end, x, top, y, bottom, paint);
         this.x = x;
+        Drawable drawable = getDrawable();
+        int transY = y - drawable.getBounds().bottom + 9;
+        canvas.save();
+        canvas.translate(x, transY);
+        drawable.draw(canvas);
+        canvas.restore();
     }
 
     public boolean clicked(int position) {
