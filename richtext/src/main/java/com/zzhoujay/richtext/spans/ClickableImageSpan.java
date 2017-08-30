@@ -41,14 +41,38 @@ public class ClickableImageSpan extends ImageSpan implements LongClickableSpan {
         this.onImageLongClickListenerWeakReference = new WeakReference<>(onImageLongClickListener);
     }
 
+    public int getSize(Paint paint, CharSequence text, int start, int end,
+                       Paint.FontMetricsInt fontMetricsInt) {
+        Drawable drawable = getDrawable();
+        Rect rect = drawable.getBounds();
+        if (fontMetricsInt != null) {
+            Paint.FontMetricsInt fmPaint = paint.getFontMetricsInt();
+            int fontHeight = fmPaint.bottom - fmPaint.top;
+            int drHeight = rect.bottom - rect.top;
+
+            //对于这里我表示,我不知道为啥是这样。不应该是fontHeight/2?但是只有fontHeight/4才能对齐
+            //难道是因为TextView的draw的时候top和bottom是大于实际的？具体请看下图
+            //所以fontHeight/4是去除偏差?
+            int top = drHeight / 2 - fontHeight / 4;
+            int bottom = drHeight / 2 + fontHeight / 4;
+
+            fontMetricsInt.ascent = -bottom;
+            fontMetricsInt.top = -bottom;
+            fontMetricsInt.bottom = top;
+            fontMetricsInt.descent = top;
+        }
+        return rect.right;
+    }
 
     @Override
-    public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y, int bottom, Paint paint) {
-//        super.draw(canvas, text, start, end, x, top, y, bottom, paint);
+    public void draw(Canvas canvas, CharSequence text, int start, int end,
+                     float x, int top, int y, int bottom, Paint paint) {
         this.x = x;
         Drawable drawable = getDrawable();
-        int transY = y - drawable.getBounds().bottom + 9;
         canvas.save();
+        int transY = 0;
+        //获得将要显示的文本高度-图片高度除2等居中位置+top(换行情况)，如果要改为底部对齐，则去掉注释调上面的getSize()方法
+        transY = ((bottom - top) - drawable.getBounds().bottom) / 2 + top;
         canvas.translate(x, transY);
         drawable.draw(canvas);
         canvas.restore();
