@@ -269,10 +269,21 @@ public class RichText implements ImageGetterWrapper, ImageLoadNotify {
                 if (imageHeightMatcher.find()) {
                     holder.setHeight(parseStringToInteger(imageHeightMatcher.group(2).trim()));
                 }
+                if (maxWidth < holder.getWidth()) {
+                    float scale = (float) maxWidth / holder.getWidth();
+                    holder.setWidth(maxWidth);
+                    holder.setHeight((int) (holder.getHeight() * scale));
+                }
             }
             imageHolderMap.put(holder.getSource(), holder);
             position++;
         }
+    }
+
+    private int maxWidth;//txtview的宽度，即图文混排中图片最大宽度
+
+    public void setMaxWidth(int width) {
+        maxWidth = width;
     }
 
     /**

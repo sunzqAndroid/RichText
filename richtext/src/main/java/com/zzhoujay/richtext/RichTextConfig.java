@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.v4.content.ContextCompat;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.zzhoujay.richtext.callback.Callback;
@@ -504,7 +505,7 @@ public final class RichTextConfig {
          * @param textView TextView
          * @return RichTextConfigBuild
          */
-        public RichText into(TextView textView) {
+        public RichText into(final TextView textView) {
             if (placeHolder == null && placeHolderRes != 0) {
                 try {
                     placeHolder = ContextCompat.getDrawable(textView.getContext(), placeHolderRes);
@@ -525,12 +526,23 @@ public final class RichTextConfig {
             if (errorImage == null) {
                 errorImage = new ColorDrawable(Color.TRANSPARENT);
             }
-            RichText richText = new RichText(new RichTextConfig(this), textView);
+            final RichText richText = new RichText(new RichTextConfig(this), textView);
             if (tag != null) {
                 RichText.bind(tag.get(), richText);
             }
             this.tag = null;
-            richText.generateAndSet();
+            //获取txtview控件宽度，并设置给richText
+            textView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+                @Override
+                public void onGlobalLayout() {
+                    if (textView != null) {
+                        textView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                        int richTextWidth = textView.getWidth();
+                        richText.setMaxWidth(richTextWidth);
+                        richText.generateAndSet();
+                    }
+                }
+            });
             return richText;
         }
     }
