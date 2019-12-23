@@ -10,7 +10,6 @@ import android.view.View;
 import com.zzhoujay.richtext.callback.OnImageClickListener;
 import com.zzhoujay.richtext.callback.OnImageLongClickListener;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
@@ -22,23 +21,23 @@ public class ClickableImageSpan extends ImageSpan implements LongClickableSpan {
     private float x;
     private final int position;
     private final List<String> imageUrls;
-    private final WeakReference<OnImageLongClickListener> onImageLongClickListenerWeakReference;
-    private final WeakReference<OnImageClickListener> onImageClickListenerWeakReference;
+    private final OnImageLongClickListener onImageLongClickListener;
+    private final OnImageClickListener onImageClickListener;
 
     public ClickableImageSpan(Drawable drawable, ClickableImageSpan clickableImageSpan, OnImageClickListener onImageClickListener, OnImageLongClickListener onImageLongClickListener) {
         super(drawable, clickableImageSpan.getSource());
         this.imageUrls = clickableImageSpan.imageUrls;
         this.position = clickableImageSpan.position;
-        this.onImageClickListenerWeakReference = new WeakReference<>(onImageClickListener);
-        this.onImageLongClickListenerWeakReference = new WeakReference<>(onImageLongClickListener);
+        this.onImageClickListener = onImageClickListener;
+        this.onImageLongClickListener = onImageLongClickListener;
     }
 
     public ClickableImageSpan(Drawable drawable, List<String> imageUrls, int position, OnImageClickListener onImageClickListener, OnImageLongClickListener onImageLongClickListener) {
         super(drawable, imageUrls.get(position));
         this.imageUrls = imageUrls;
         this.position = position;
-        this.onImageClickListenerWeakReference = new WeakReference<>(onImageClickListener);
-        this.onImageLongClickListenerWeakReference = new WeakReference<>(onImageLongClickListener);
+        this.onImageClickListener = onImageClickListener;
+        this.onImageLongClickListener = onImageLongClickListener;
     }
 
 
@@ -52,9 +51,7 @@ public class ClickableImageSpan extends ImageSpan implements LongClickableSpan {
         Drawable drawable = getDrawable();
         if (drawable != null) {
             Rect rect = drawable.getBounds();
-            if (position <= rect.right + x && position >= rect.left + x) {
-                return true;
-            }
+            return position <= rect.right + x && position >= rect.left + x;
         }
         return false;
     }
@@ -62,7 +59,6 @@ public class ClickableImageSpan extends ImageSpan implements LongClickableSpan {
 
     @Override
     public void onClick(View widget) {
-        OnImageClickListener onImageClickListener = onImageClickListenerWeakReference.get();
         if (onImageClickListener != null) {
             onImageClickListener.imageClicked(imageUrls, position);
         }
@@ -70,7 +66,14 @@ public class ClickableImageSpan extends ImageSpan implements LongClickableSpan {
 
     @Override
     public boolean onLongClick(View widget) {
-        OnImageLongClickListener onImageLongClickListener = onImageLongClickListenerWeakReference.get();
         return onImageLongClickListener != null && onImageLongClickListener.imageLongClicked(imageUrls, position);
+    }
+
+    public ClickableImageSpan copy() {
+        return new ClickableImageSpan(null, imageUrls, position, null, null);
+    }
+
+    public String getSource() {
+        return imageUrls.get(position);
     }
 }
