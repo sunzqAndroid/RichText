@@ -22,13 +22,14 @@ public class TestActivity extends AppCompatActivity {
                     "<img width=\"258\" height=\"258\" src=\"http://img10.360buyimg.com/imgzone/jfs/t2836/30/707249522/270588/840d428a/5721e108Ne667230f.jpg\">命名规则命名规则命名规则命名规则" +
                     "";
     private RichText richText;
+    private TextView textView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        TextView textView = (TextView) findViewById(R.id.text);
+        textView = (TextView) findViewById(R.id.text);
 
         assert textView != null;
         String img1 = "http://input.ti.eoffcn.com/uploads/uploads_question/final/20160513/1463111924549773.png";
@@ -37,7 +38,8 @@ public class TestActivity extends AppCompatActivity {
         String content = String.format(QUESTIONTYPE, "单选题") + String.format(IMAGE_TAG, "258", "258", img1)
                 + "命名规则命名规则命名规则命名规则命名规则命" + String.format(IMAGE_TAG, "258", "258", img2)
                 + "命名规则命名规则命名规则命名规则命名规则命" + String.format(IMAGE_TAG, "258", "258", img2);
-        richText = RichText.from(content).scaleType(ImageHolder.ScaleType.FIT_XY).into(textView);
+//        content = "<span style=\"color:#545658;font-size:15px;\"><p><img src=\"//:1\" width=\"96\" height=\"122\"><img src=\"http://3min-class.oss-cn-zhangjiakou.aliyuncs.com/images/question/1577341667186.png\" alt=\"图片说明\" width=\"96\" height=\"122\"></p></span>";
+        richText = RichText.from(content).scaleType(ImageHolder.ScaleType.fit_xy).into(textView);
 
     }
 

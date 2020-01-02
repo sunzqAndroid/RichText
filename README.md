@@ -1,9 +1,10 @@
-# RichText
+# RichText [ ![Download](https://api.bintray.com/packages/zzhoujay/maven/richtext/images/download.svg) ](https://bintray.com/zzhoujay/maven/richtext/_latestVersion)
 
 > Android平台下的富文本解析器
 
 * 流式操作
 * 低侵入性
+* 依赖少，只依赖了`disklrucache`和`support v4`
 * 支持Html和Markdown格式文本
 * 支持图片点击和长按事件
 * 链接点击事件和长按事件
@@ -12,8 +13,9 @@
 * 支持修正图片宽高
 * 支持GIF图片
 * 支持Base64编码、本地图片和Assets目录图片
-* 自持自定义图片加载器
+* 自持自定义图片加载器、图片加载器
 * 支持内存和磁盘双缓存
+* 已经加入对自定义Html解析器的支持
 
 ### 效果
 
@@ -23,20 +25,30 @@
 ### gradle中引用的方法
 
 ```
-compile 'com.zzhoujay.richtext:richtext:2.5.4'
+compile 'com.zzhoujay.richtext:richtext:latest-version'
 ```
 
-### Glide图片加载器 （已不建议使用，可以用默认图片加载器替代）
+### 使用新的Html解析器
 
+只需加入此依赖即可，无须其他操作，新Html解析器对原生Html解析器的功能做了补充
 ```
-compile 'com.zzhoujay.glideimagegetter:glideimagegetter:1.0.5'
+compile 'com.zzhoujay:html:latest-version'
 ```
 
-关于Glide图片加载器和默认图片加载器的区别请看[这里](https://github.com/zzhoujay/RichText/wiki/自定义图片加载器)
+新Html解析器增加了对代码块的支持，代码块可以触发点击事件，通过`urlClick`设置，
+代码块回调的参数由`code://`开头
+
+使用新Html解析器遇到问题请在[https://github.com/zzhoujay/Htm](https://github.com/zzhoujay/Html)提issue
+
+### 关于issue
+
+最近一段时间会比较忙，issue不能及时处理，一般会定时抽空集中解决issue，但时间有限解决速度上不敢保证。
+
+欢迎提交pull request帮助完善这个项目
 
 ### 注意
 
-在第一次调用RichText之前先调用`RichText.initCacheDir()`方法设置缓存目录，如果未调用则将不会进行本地缓存
+在第一次调用RichText之前先调用`RichText.initCacheDir()`方法设置缓存目录
 
 ImageFixCallback的回调方法不一定是在主线程回调，注意不要进行UI操作
 
@@ -51,9 +63,9 @@ textView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 
 [多看wiki](https://github.com/zzhoujay/RichText/wiki)、[多看wiki](https://github.com/zzhoujay/RichText/wiki)、[多看wiki](https://github.com/zzhoujay/RichText/wiki)，重要的事情说三遍
 
-### 后续计划
+### 关于自定义的Html解析器
 
-* ~~添加自定义标签的支持~~ (已添加对少部分自定义标签的支持)
+Html解析器子项目：[Html](https://github.com/zzhoujay/Htm)
 
 ### 关于Markdown
 
@@ -61,9 +73,9 @@ Markdown源于子项目：[Markdown](https://github.com/zzhoujay/Markdown)
 
 若在markdown解析过程中发现什么问题可以在该项目中反馈
 
-### 富文本编辑器
+### 关于富文本编辑器
 
-编辑功能目前正在开发中，[RichEditor](https://github.com/zzhoujay/RichEditor)
+编辑器开发已暂停，[RichEditor](https://github.com/zzhoujay/RichEditor)
 
 ### 具体使用请查看demo
 
@@ -71,9 +83,6 @@ Markdown源于子项目：[Markdown](https://github.com/zzhoujay/Markdown)
 [RecyclerView Demo](https://github.com/zzhoujay/RichText/blob/master/app/src/main/java/zhou/demo/RecyclerViewActivity.java)、
 [Gif Demo](https://github.com/zzhoujay/RichText/blob/master/app/src/main/java/zhou/demo/GifActivity.java)
 
-### 特别感谢
-
-感谢[@huoguangjin](https://github.com/huoguangjin)在开发过程中对gilde的源码分析的帮助
 
 ### License
 
